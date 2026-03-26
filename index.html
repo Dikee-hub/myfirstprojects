@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #e2e2e2;
+        }
+        .tab.active {
+            background-color: #fff;
+            border-bottom: 1px solid white;
+            font-weight: bold;
+        }
+        .content {
+            display: none;
+        }
+        .content.active {
+            display: block;
+        }
+        .calculator {
+            text-align: center;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Advanced Calculator</h1>
+        <div class="tabs">
+            <div class="tab active" onclick="openTab('basic')">Basic Operations</div>
+            <div class="tab" onclick="openTab('trig')">Trigonometry</div>
+            <div class="tab" onclick="openTab('log')">Logarithms</div>
+            <div class="tab" onclick="openTab('power')">Power & Roots</div>
+            <div class="tab" onclick="openTab('stats')">Statistics</div>
+            <div class="tab" onclick="openTab('utils')">Utilities</div>
+        </div>
+
+        <div id="basic" class="content active calculator">
+            <input type="text" id="basicInput" placeholder="Enter calculation..."><br>
+            <button onclick="calculateBasic()">Calculate</button>
+            <div id="basicResult"></div>
+        </div>
+
+        <div id="trig" class="content calculator">
+            <input type="text" id="trigInput" placeholder="Enter angle (in degrees)..."><br>
+            <button onclick="calculateTrig('sin')">Sin</button>
+            <button onclick="calculateTrig('cos')">Cos</button>
+            <button onclick="calculateTrig('tan')">Tan</button>
+            <div id="trigResult"></div>
+        </div>
+
+        <div id="log" class="content calculator">
+            <input type="text" id="logInput" placeholder="Enter number..."><br>
+            <button onclick="calculateLog()">Calculate Log</button>
+            <div id="logResult"></div>
+        </div>
+
+        <div id="power" class="content calculator">
+            <input type="text" id="powerInput" placeholder="Base and exponent (base^exponent)"><br>
+            <button onclick="calculatePower()">Calculate Power</button>
+            <div id="powerResult"></div>
+        </div>
+
+        <div id="stats" class="content calculator">
+            <input type="text" id="statsInput" placeholder="Enter numbers separated by commas..."><br>
+            <button onclick="calculateStats()">Calculate Statistics</button>
+            <div id="statsResult"></div>
+        </div>
+
+        <div id="utils" class="content calculator">
+            <input type="text" id="utilsInput" placeholder="Enter value for conversion..."><br>
+            <button onclick="convertUnits()">Convert</button>
+            <div id="utilsResult"></div>
+        </div>
+    </div>
+
+    <script>
+        function openTab(tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).className += " active";
+            var tabs = document.getElementsByClassName('tab');
+            for (i = 0; i < tabs.length; i++) {
+                tabs[i].className = tabs[i].className.replace(" active", "");
+            }
+            event.currentTarget.className += " active";
+        }
+
+        function calculateBasic() {
+            var input = document.getElementById('basicInput').value;
+            try {
+                var result = eval(input);
+                document.getElementById('basicResult').innerHTML = 'Result: ' + result;
+            } catch (error) {
+                document.getElementById('basicResult').innerHTML = 'Error: Invalid calculation';
+            }
+        }
+
+        function calculateTrig(func) {
+            var angle = document.getElementById('trigInput').value;
+            var radians = angle * (Math.PI / 180);
+            var result;
+            switch (func) {
+                case 'sin':
+                    result = Math.sin(radians);
+                    break;
+                case 'cos':
+                    result = Math.cos(radians);
+                    break;
+                case 'tan':
+                    result = Math.tan(radians);
+                    break;
+            }
+            document.getElementById('trigResult').innerHTML = 'Result: ' + result;
+        }
+
+        function calculateLog() {
+            var num = document.getElementById('logInput').value;
+            var result = Math.log(num);
+            document.getElementById('logResult').innerHTML = 'Result: ' + result;
+        }
+
+        function calculatePower() {
+            var input = document.getElementById('powerInput').value.split('^');
+            var base = parseFloat(input[0]);
+            var exponent = parseFloat(input[1]);
+            var result = Math.pow(base, exponent);
+            document.getElementById('powerResult').innerHTML = 'Result: ' + result;
+        }
+
+        function calculateStats() {
+            var numbers = document.getElementById('statsInput').value.split(',').map(Number);
+            var mean = numbers.reduce((a, b) => a + b, 0) / numbers.length;
+            var max = Math.max(...numbers);
+            var min = Math.min(...numbers);
+            document.getElementById('statsResult').innerHTML = 'Mean: ' + mean + ', Max: ' + max + ', Min: ' + min;
+        }
+
+        function convertUnits() {
+            var value = document.getElementById('utilsInput').value;
+            // Placeholder for conversion logic
+            document.getElementById('utilsResult').innerHTML = 'Converted Value: ' + value;
+        }
+    </script>
+</body>
+</html>
